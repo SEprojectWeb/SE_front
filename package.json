@@ -1,0 +1,22 @@
+{
+  "name": "seprj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SEprojectWeb/SE_front.git"
+  },
+  "keywords": [
+    "package"
+  ],
+  "author": "sujeong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SEprojectWeb/SE_front/issues"
+  },
+  "homepage": "https://github.com/SEprojectWeb/MainPage/main.js"
+}
