@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import axios from "axios";
 import "./UploadPage.css";
 
 const UploadPage = () => {
@@ -19,14 +19,19 @@ const UploadPage = () => {
     image: null,
   });
 
-  const navigate = useNavigate(); 
-
   // 입력 변화 처리
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let formattedValue = value;
+
+    if (name === "price") {
+      // 숫자만 남기고 포맷팅
+      formattedValue = value.replace(/[^0-9]/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     setProductDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
 
@@ -50,7 +55,7 @@ const UploadPage = () => {
     formData.append("name", productDetails.name);
     formData.append("type", productDetails.type);
     formData.append("details", productDetails.details);
-    formData.append("price", productDetails.price);
+    formData.append("price", productDetails.price.replace(/,/g, "")); // 콤마 제거
     formData.append("brand", productDetails.brand);
     formData.append("energyEfficiency", productDetails.energyEfficiency);
     formData.append("size", productDetails.size);
@@ -65,12 +70,9 @@ const UploadPage = () => {
 
     try {
       // API 호출하여 제품 세부사항을 데이터베이스에 저장
-      const response = await fetch("/api/products", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await axios.post("/api/products", formData);
 
-      if (response.ok) {
+      if (response.status === 200) {
         alert("제품이 등록되었습니다!");
 
         // 폼을 초기 상태로 리셋
@@ -90,8 +92,6 @@ const UploadPage = () => {
           image: null,
         });
 
-        // 제품 등록 페이지로 리디렉션
-        navigate("/product-registration");
       } else {
         // 오류 메시지 표시
         alert("제품 등록에 실패했습니다. 다시 시도해 주세요.");
@@ -104,6 +104,9 @@ const UploadPage = () => {
 
   return (
     <div className="product-registration-container">
+      {/* 헤더 코드 추가 */}
+      {/* <Header /> */}
+
       <h1>제품 등록</h1>
       <form onSubmit={handleSubmit} className="product-form">
         {/* 이미지 업로드 섹션 */}
@@ -162,9 +165,9 @@ const UploadPage = () => {
           />
         </div>
         <div className="form-item">
-          <label htmlFor="price">가격</label>
+          <label htmlFor="price">가격 (원)</label>
           <input
-            type="number"
+            type="text"
             id="price"
             name="price"
             value={productDetails.price}
@@ -182,7 +185,7 @@ const UploadPage = () => {
           />
         </div>
         <div className="form-item">
-          <label htmlFor="energyEfficiency">에너지 효율</label>
+          <label htmlFor="energyEfficiency">에너지 효율 (등급)</label>
           <input
             type="number"
             id="energyEfficiency"
@@ -259,6 +262,9 @@ const UploadPage = () => {
           제품 등록
         </button>
       </form>
+
+      {/* 푸터 코드 추가 */}
+      {/* <Footer /> */}
     </div>
   );
 };

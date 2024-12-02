@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./ComparePage.css";
 
 const ComparePage = () => {
   const [category, setCategory] = useState("All");
@@ -48,13 +49,13 @@ const ComparePage = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="compare-page-container">
+      {/* 헤더 코드 추가 */}
+      {/* <Header /> */}
+
       <h1>제품 비교</h1>
-
       <h2>마음에 드는 제품을 선택하여 서로 비교!</h2>
-
-      {/* 카테고리 선택기 */}
-      <div style={{ marginBottom: "20px" }}>
+      <div className="category-selector">
         <label htmlFor="category">제품 유형: </label>
         <select
           id="category"
@@ -68,10 +69,7 @@ const ComparePage = () => {
           {/*제품 종류시 추가 작성*/}
         </select>
       </div>
-
-      {/* 비교 영역 */}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        {/* 왼쪽 사이드 */}
+      <div className="comparison-section">
         <ProductSearchSection
           title="제품 1"
           searchQuery={leftSearchQuery}
@@ -80,8 +78,6 @@ const ComparePage = () => {
           onProductClick={(product) => handleProductClick("left", product)}
           selectedProduct={leftProduct}
         />
-
-        {/* 오른쪽 사이드 */}
         <ProductSearchSection
           title="제품 2"
           searchQuery={rightSearchQuery}
@@ -91,9 +87,10 @@ const ComparePage = () => {
           selectedProduct={rightProduct}
         />
       </div>
-
-      {/* 비교 세부사항 */}
       <ComparisonDetails leftProduct={leftProduct} rightProduct={rightProduct} />
+
+      {/* 푸터 코드 추가 */}
+      {/* <Footer /> */}
     </div>
   );
 };
@@ -198,16 +195,20 @@ const ProductCard = ({ product }) => (
 
 // 추가 비교 세부사항 컴포넌트
 const ComparisonDetails = ({ leftProduct, rightProduct }) => {
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const comparisonItems = [
     { label: "유형", key: "type" },
     { label: "세부사항", key: "details" },
-    { label: "가격", key: "price" },
+    { label: "가격", key: "price", unit: "원", format: formatPrice },
     { label: "브랜드", key: "brand" },
-    { label: "에너지 효율", key: "energyEfficiency" },
-    { label: "전기 사용량", key: "electricityUsage" },
-    { label: "무게", key: "weight" },
+    { label: "에너지 효율", key: "energyEfficiency", unit: "등급" },
+    { label: "전기 사용량", key: "electricityUsage", unit: "W" },
+    { label: "무게", key: "weight", unit: "kg" },
     { label: "해상도", key: "resolution" },
-    { label: "용량", key: "capacity" },
+    { label: "용량", key: "capacity", unit: "L" },
     { label: "크기", key: "size" },
     { label: "기타", key: "other" },
   ];
@@ -229,10 +230,10 @@ const ComparisonDetails = ({ leftProduct, rightProduct }) => {
         >
           <strong style={{ flex: 1 }}>{item.label}</strong>
           <span style={{ flex: 1, textAlign: "center" }}>
-            {leftProduct ? leftProduct[item.key] ?? "-" : "-"}
+            {leftProduct ? `${item.format ? item.format(leftProduct[item.key]) : leftProduct[item.key] ?? "-"} ${item.unit ?? ""}` : "-"}
           </span>
           <span style={{ flex: 1, textAlign: "center" }}>
-            {rightProduct ? rightProduct[item.key] ?? "-" : "-"}
+            {rightProduct ? `${item.format ? item.format(rightProduct[item.key]) : rightProduct[item.key] ?? "-"} ${item.unit ?? ""}` : "-"}
           </span>
         </div>
       ))}

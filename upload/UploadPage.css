@@ -1,27 +1,25 @@
-/* UploadPage.css */
-
-/* General container for the registration page */
+/* 등록 페이지의 일반 컨테이너 */
 .product-registration-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Title of the page */
+/* 페이지 제목 */
 h1 {
   text-align: center;
   color: #333;
 }
 
-/* Form container */
+/* 폼 컨테이너 */
 .product-form {
-  background-color: beige;
+  background-color: #d5e4fb;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Style for each form item (label + input) */
+/* 각 폼 항목(라벨 + 입력)의 스타일 */
 .form-item {
   background-color: white;
   margin-bottom: 15px;
@@ -53,13 +51,14 @@ h1 {
   width: 100%;
   padding: 15px;
   font-size: 18px;
-  color: white;
-  background-color: #4CAF50;
+  color: black;
+  background-color: #5f9dfb;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .submit-btn:hover {
-  background-color: #45a049;
+  background-color: #003d98;
+  color:white;
 }
